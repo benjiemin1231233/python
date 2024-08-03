@@ -31,7 +31,10 @@ import subprocess
 import datetime
 from queue import Queue
 
-
+if '__file__' in globals():
+    script_path = os.path.abspath(__file__)
+else:
+    script_path = os.path.abspath(sys.argv[0])
 
 class NullWriter(object):
     def write(self, arg):
